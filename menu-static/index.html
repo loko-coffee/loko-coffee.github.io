@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#15110e">
+  <title>L'oko Coffee — Menu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #0c0a08;
+      font-family: 'Archivo', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      height: 100dvh;
+      margin: 0 auto;
+      background: #15110e;
+      color: #efe7da;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* header */
+    .header {
+      padding: 18px 22px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+      background: #15110e;
+    }
+
+    .header img {
+      height: 52px;
+      width: auto;
+    }
+
+    .wordmark {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+    }
+
+    .wordmark .name {
+      font-family: 'Instrument Serif', serif;
+      font-size: 27px;
+      letter-spacing: .01em;
+      color: #f2ecdf;
+    }
+
+    .wordmark .sub {
+      font-family: 'Archivo', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .42em;
+      color: #9a8c79;
+      margin-top: 5px;
+      padding-left: .42em;
+    }
+
+    /* tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(255, 255, 255, .1);
+      background: #15110e;
+      flex: 0 0 auto;
+    }
+
+    .tab {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 14px 0 0;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tab .lbl {
+      font-family: 'Archivo', sans-serif;
+      font-size: 12.5px;
+      font-weight: 500;
+      letter-spacing: .26em;
+      color: #857969;
+      padding-left: .26em;
+      transition: color .2s ease;
+    }
+
+    .tab .ind {
+      width: 46px;
+      height: 2px;
+      background: transparent;
+      border-radius: 2px;
+      transition: background .2s ease;
+    }
+
+    .tab.active .lbl {
+      font-weight: 600;
+      color: #d6b26a;
+    }
+
+    .tab.active .ind {
+      background: #d6b26a;
+    }
+
+    /* scroller */
+    .scroller {
+      flex: 1;
+      display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .scroller::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scroller {
+      scrollbar-width: none;
+    }
+
+    .page {
+      flex: 0 0 100%;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      scroll-snap-align: start;
+      padding: 0 22px 64px;
+    }
+
+    .page::-webkit-scrollbar {
+      display: none;
+    }
+
+    .page {
+      scrollbar-width: none;
+    }
+
+    .page h2 {
+      font-family: 'Instrument Serif', serif;
+      font-weight: 400;
+      font-size: 42px;
+      line-height: 1;
+      color: #f2ecdf;
+      margin: 24px 0 2px;
+    }
+
+    .page .caption {
+      font-family: 'Space Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: .12em;
+      color: #7e7263;
+      margin: 0 0 4px;
+    }
+
+    .sec-head {
+      margin: 30px 0 6px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sec-head .t {
+      font-family: 'Archivo', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .22em;
+      color: #d6b26a;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .sec-head .rule {
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, .13);
+    }
+
+    .row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 8px 0;
+    }
+
+    .row .nm {
+      font-family: 'Archivo', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      color: #ece4d6;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .row .dots {
+      flex: 1 1 auto;
+      min-width: 20px;
+      border-bottom: 1px dotted rgba(255, 255, 255, .2);
+      transform: translateY(-3px);
+    }
+
+    .row .pr {
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      color: #d6b26a;
+      white-space: nowrap;
+    }
+
+    .chips {
+      display: flex;
+      gap: 7px;
+    }
+
+    /* right-aligned chip sets wrap toward the right edge when they run long */
+    .row .chips {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      row-gap: 7px;
+    }
+
+    .row .chips .chip-break {
+      flex-basis: 100%;
+      height: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 5px;
+      padding: 3px 8px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 3px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11.5px;
+      white-space: nowrap;
+    }
+
+    .chip .cl {
+      color: #9a8c79;
+    }
+
+    .chip .cp {
+      color: #d6b26a;
+    }
+
+    /* Espresso Based: inline (right-aligned) chips show price at the same size as plain rows */
+    .row .chip .cp {
+      font-size: 14px;
+    }
+
+    .variant {
+      padding: 8px 0;
+    }
+
+    .variant .nm {
+      font-family: 'Archivo', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      color: #ece4d6;
+    }
+
+    .variant .chips {
+      flex-wrap: wrap;
+      margin-top: 7px;
+    }
+
+    .variant .chip {
+      gap: 6px;
+      padding: 3px 9px;
+    }
+
+    .note {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 6px 0 6px 12px;
+    }
+
+    .note .nm {
+      font-family: 'Archivo', sans-serif;
+      font-style: italic;
+      font-size: 13.5px;
+      font-weight: 400;
+      color: #8d8170;
+    }
+
+    .footer {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .08em;
+      color: #6f6456;
+      text-align: center;
+      margin: 44px 0 0;
+      padding-top: 22px;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      line-height: 1.7;
+    }
+
+    .footer .f-brand {
+      font-family: 'Archivo', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      color: #d6b26a;
+    }
+
+    .footer .f-tag {
+      font-style: italic;
+      font-family: 'Instrument Serif', serif;
+      font-size: 14px;
+      letter-spacing: .02em;
+      color: #9a8c79;
+      margin: 3px 0 12px;
+    }
+
+    .footer .f-hours {
+      color: #8d8170;
+    }
+
+    .footer .f-addr {
+      margin-top: 12px;
+      color: #6f6456;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <div class="header">
+      <img src="lokocoffee.svg" alt="L'oko Coffee">
+      <div class="wordmark">
+        <span class="sub">L'OKO COFFEE</span>
+      </div>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div class="scroller" id="scroller"></div>
+  </div>
+
+  <script>
+    const RAW = { "menus": [{ "id": "minuman", "title": "Minuman", "caption": "DRINKS", "sections": [{ "id": "signature", "title": "Signature", "items": [{ "name": "Kopi Susu L'oko", "price": "19K" }, { "name": "Kopi Susu L'oko Bold", "price": "20K" }, { "name": "Kopi Susu Aren", "price": "20K" }, { "name": "Butterscotch Sea Salt", "price": "23K" }, { "name": "Kopi Susu Peanut", "price": "23K" }] }, { "id": "espresso_based", "title": "Espresso Based", "items": [{ "name": "Espresso", "price": "15K | 15K", "variants": "Hot | Ice" }, { "name": "Cappuccino", "price": "20K | 20K", "variants": "Hot | Ice" }, { "name": "Cafe Latte", "price": "20K | 20K", "variants": "Hot | Ice" }, { "name": "Caramel Latte", "price": "20K | 20K", "variants": "Hot | Ice" }, { "name": "Salted Caramel", "price": "20K | 20K", "variants": "Hot | Ice" }, { "name": "Long Black", "price": "18K | 18K", "variants": "Hot | Ice" }, { "name": "Mont Blanc", "price": "25K" }, { "name": "Dirty Latte", "price": "25K" }, { "name": "Affogato", "price": "16K" }] }, { "id": "manual_brew", "title": "Manual Brew", "items": [{ "name": "V60", "price": "19K | ask", "variants": "Regular Beans | Seasonal Beans" }, { "name": "+ Japanese", "price": "2K", "isAddOn": true }, { "name": "Vietnam Drip", "price": "15K | 13K", "variants": "Arabica | Robusta" }, { "name": "Tubruk", "price": "15K | 13K", "variants": "Arabica | Robusta" }] }, { "id": "matcha_series", "title": "Matcha Series", "items": [{ "name": "Matcha", "price": "20K | 20K", "variants": "Hot | Ice" }, { "name": "Matcha Sea Salt", "price": "23K" }, { "name": "Matcha Strawberry", "price": "23K" }, { "name": "Matcha Coconut", "price": "20K" }] }, { "id": "add_on", "title": "Add On", "items": [{ "name": "Extra Espresso", "price": "5K" }, { "name": "Single Scoop Ice Cream", "price": "5K" }, { "name": "Sea Salt", "price": "5K" }, { "name": "SKM", "price": "2K" }] }, { "id": "other", "title": "Other", "items": [{ "name": "Chocolate", "price": "18K | 18K", "variants": "Hot | Ice" }, { "name": "Creamy Mango", "price": "18K" }, { "name": "Creamy Strawberry", "price": "18K" }, { "name": "Mango Float", "price": "22K" }, { "name": "Strawberry Float", "price": "22K" }, { "name": "Thai Tea", "price": "18K" }, { "name": "Lychee Tea", "price": "15K" }, { "name": "Lemon Tea", "price": "15K" }, { "name": "Mineral Water", "price": "5K" }, { "name": "Ice Cream", "price": "5K" }, { "name": "Greenfields", "price": "23K" }] }, { "id": "bottle_coffee", "title": "Bottle Coffee 500 ml", "items": [{ "name": "Kopi Susu L'oko", "price": "45K" }, { "name": "Kopi Susu", "price": "50K", "variants": "Aren | Caramel" }, { "name": "", "price": "50K", "variants": "Salted Caramel" }] }] }, { "id": "makanan", "title": "Makanan", "caption": "FOOD", "sections": [{ "id": "main_course", "title": "Main Course", "items": [{ "name": "Dendeng Batokok", "price": "30K" }, { "name": "Beef Blackpepper", "price": "30K" }, { "name": "Beef Teriyaki", "price": "30K" }, { "name": "Ayam Cabai Hijau", "price": "23K" }, { "name": "Ayam Garlic Parmesan", "price": "25K" }, { "name": "Ayam Teriyaki", "price": "25K" }, { "name": "Ayam Blackpepper", "price": "25K" }, { "name": "Ayam Sambal Matah", "price": "23K" }, { "name": "Paru Chilipadi", "price": "23K" }, { "name": "Nasi Telur Kecap", "price": "15K" }, { "name": "Indomie Kuah", "price": "15K" }, { "name": "Indomie Goreng", "price": "15K" }] }, { "id": "pasta", "title": "Pasta", "items": [{ "name": "Spaghetti Aglio O'lio", "price": "25K" }, { "name": "Spaghetti Carbonara", "price": "25K" }, { "name": "Spaghetti Bolognese", "price": "25K" }] }, { "id": "add_on_pasta", "title": "Add On", "items": [{ "name": "Telur", "price": "4K" }, { "name": "Sosis", "price": "5K" }, { "name": "Nugget", "price": "5K" }, { "name": "Nasi", "price": "5K" }] }, { "id": "snack", "title": "Snack", "items": [{ "name": "French Fries", "price": "15K" }, { "name": "Mix Platter", "price": "20K" }, { "name": "Chicken Pop", "price": "20K" }, { "name": "Mendoan", "price": "10K" }, { "name": "Cireng", "price": "10K" }, { "name": "Brokoli Goreng", "price": "15K" }, { "name": "Pastel", "price": "15K" }, { "name": "Churros", "price": "15K" }, { "name": "Tahu Cabe Garam", "price": "16K" }, { "name": "Tahu Walik", "price": "16K" }, { "name": "Ice Cream Toast", "price": "16K" }, { "name": "Scrambled Egg Toast", "price": "23K" }, { "name": "Salad Sayur", "price": "25K" }, { "name": "Cheese Cake", "price": "25K" }, { "name": "Burnt Cheese Cake", "price": "25K" }] }] }] };
+
+    const el = (tag, cls) => { const n = document.createElement(tag); if (cls) n.className = cls; return n; };
+
+    function chip(label, price) {
+      const c = el('span', 'chip');
+      const cl = el('span', 'cl'); cl.textContent = label;
+      const cp = el('span', 'cp'); cp.textContent = price;
+      c.append(cl, cp);
+      return c;
+    }
+
+    function renderItem(it, sectionId) {
+      const price = it.price, variants = it.variants;
+      // Dual-price items (Hot/Ice, Arabica/Robusta, etc.) use right-aligned price chips,
+      // as do the Bottle Coffee flavours. V60's long bean labels keep the stacked layout.
+      const right = (!!price && price.indexOf('|') !== -1) || sectionId === 'bottle_coffee';
+
+      // variants present -> chips
+      if (variants && price) {
+        const labels = variants.split('|').map(s => s.trim());
+        const hasMulti = price.indexOf('|') !== -1;
+        const prices = hasMulti ? price.split('|').map(s => s.trim()) : null;
+        const chips = labels.map((l, i) => chip(l, hasMulti ? (prices[i] || '') : price));
+
+        if (right) {
+          const row = el('div', 'row');
+          const nm = el('span', 'nm'); nm.textContent = it.name;
+          const dots = el('span', 'dots');
+          const wrap = el('span', 'chips');
+          chips.forEach((c, i) => {
+            // force a line break every 2 chips so longer sets stack (e.g. Salted Caramel below)
+            if (i > 0 && i % 2 === 0) wrap.appendChild(el('span', 'chip-break'));
+            wrap.appendChild(c);
+          });
+          row.append(nm, dots, wrap);
+          return row;
+        }
+        const v = el('div', 'variant');
+        const nm = el('span', 'nm'); nm.textContent = it.name;
+        const wrap = el('div', 'chips');
+        chips.forEach(c => wrap.appendChild(c));
+        v.append(nm, wrap);
+        return v;
+      }
+
+      // simple name .... price
+      if (price) {
+        const row = el('div', 'row');
+        const nm = el('span', 'nm'); nm.textContent = it.name;
+        const dots = el('span', 'dots');
+        const pr = el('span', 'pr'); pr.textContent = price;
+        row.append(nm, dots, pr);
+        return row;
+      }
+
+      // note: muted, no price
+      const note = el('div', 'note');
+      const nm = el('span', 'nm'); nm.textContent = it.name;
+      note.appendChild(nm);
+      return note;
+    }
+
+    function renderPage(menu) {
+      const page = el('div', 'page');
+      const h2 = el('h2'); h2.textContent = menu.title;
+      const cap = el('p', 'caption'); cap.textContent = menu.caption;
+      page.append(h2, cap);
+
+      menu.sections.forEach(section => {
+        const head = el('div', 'sec-head');
+        const t = el('span', 't'); t.textContent = section.title;
+        const rule = el('span', 'rule');
+        head.append(t, rule);
+        page.appendChild(head);
+        section.items.forEach(it => page.appendChild(renderItem(it, section.id)));
+      });
+
+      const footer = el('div', 'footer');
+      footer.innerHTML = `
+        <div class="f-brand">L'OKO COFFEE &amp; ROASTERY</div>
+        <div class="f-tag">Specialty Coffee Roastery</div>
+        <div class="f-hours">Senin&nbsp;-&nbsp;Jum’at&nbsp;&nbsp;|&nbsp;&nbsp;06.00&nbsp;-&nbsp;22.00</div>
+        <div class="f-hours">Sabtu&nbsp;-&nbsp;Minggu&nbsp;&nbsp;|&nbsp;&nbsp;06.00&nbsp;-&nbsp;23.00</div>
+        <div class="f-addr">Pujasera Maron, Genteng, Banyuwangi</div>`;
+      page.appendChild(footer);
+      return page;
+    }
+
+    const tabsEl = document.getElementById('tabs');
+    const scroller = document.getElementById('scroller');
+    const tabButtons = [];
+
+    RAW.menus.forEach((menu, i) => {
+      scroller.appendChild(renderPage(menu));
+
+      const btn = el('button', 'tab' + (i === 0 ? ' active' : ''));
+      const lbl = el('span', 'lbl'); lbl.textContent = menu.title;
+      const ind = el('span', 'ind');
+      btn.append(lbl, ind);
+      btn.addEventListener('click', () => goTab(i));
+      tabsEl.appendChild(btn);
+      tabButtons.push(btn);
+    });
+
+    let active = 0;
+    function setActive(i) {
+      if (i === active) return;
+      active = i;
+      tabButtons.forEach((b, j) => b.classList.toggle('active', j === i));
+    }
+    function goTab(i) {
+      setActive(i);
+      scroller.scrollTo({ left: i * scroller.clientWidth, behavior: 'smooth' });
+    }
+
+    let raf = null;
+    scroller.addEventListener('scroll', () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = null;
+        if (!scroller.clientWidth) return;
+        setActive(Math.round(scroller.scrollLeft / scroller.clientWidth));
+      });
+    });
+
+    // keep the active page aligned if the viewport resizes
+    window.addEventListener('resize', () => {
+      scroller.scrollLeft = active * scroller.clientWidth;
+    });
+  </script>
+</body>
+
+</html>
