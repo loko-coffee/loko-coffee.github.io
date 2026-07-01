@@ -2,12 +2,9 @@
 name: Deploy static content to Pages
 
 on:
-  # Disabled: this repo no longer auto-deploys on push to the default branch.
-  # The push trigger is intentionally commented out (kept for reference / easy
-  # re-enable). The workflow now ONLY runs when started manually from the
-  # Actions tab via "Run workflow".
-  # push:
-  #   branches: ["main"]
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -22,7 +19,7 @@ permissions:
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   # Single deploy job since we're just deploying
