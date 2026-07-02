@@ -10,6 +10,7 @@
 | External menu app | **Svelte app in separate repo** | Real user-facing menu UI lives there. |
 | External backend | **Supabase** | External Svelte app reads/writes here, not this repo. |
 | External hosting | **Vercel** | Separate repo deployment target for live app. |
+| Ops | **GitHub Actions scheduled workflow** | Pings downstream Supabase twice a week so its free-tier project doesn't auto-pause. |
 
 ## Architecture
 This repo is **not** primary menu app codebase. It is stable domain gateway in front
@@ -99,6 +100,25 @@ Conventions in data:
 - `isAddOn: true` marks muted subordinate item.
 - `section.id` is stable slug; preserve when syncing with downstream app.
 
+## Supabase keepalive job
+Free Supabase projects pause after ~1 week idle. Since this repo already links to the
+downstream app, it also hosts the least-friction way to keep that project alive: a
+scheduled GitHub Actions workflow, independent of the Vercel app's own deploys/traffic.
+
+- Workflow: `.github/workflows/supabase-keepalive.yml`.
+- Schedule: Monday and Friday, 01:00 UTC (cron `0 1 * * 1,5`), plus manual
+  `workflow_dispatch` for on-demand testing from the Actions tab.
+- Action: `GET` one row from the downstream `menu_doc` table via the Supabase REST
+  API (`anon` role, read-only — matches the RLS `select` policy in the Vercel repo's
+  `tech.md`). Job fails (non-zero exit) on a 4xx/5xx response, which surfaces as a
+  failed workflow run.
+- Credentials: `SUPABASE_URL` and `SUPABASE_ANON_KEY` are stored as **GitHub Actions
+  repository secrets** (Settings -> Secrets and variables -> Actions), not committed
+  to any file. Even though the downstream app's own docs treat the anon key as
+  publishable, this repo is public — keep it out of version control here regardless.
+  Values match `PUBLIC_SUPABASE_URL` / `PUBLIC_SUPABASE_ANON_KEY` in the Vercel repo's
+  `.env.example`; update both places together if the Supabase project ever rotates.
+
 ## Configuration points
 This repo currently uses hard-coded URL constants inside HTML, not env vars.
 
@@ -120,11 +140,18 @@ extract shared generation/build step before adding more pages.
 - Embedded page should still fail soft: keep human-readable fallback link.
 
 ## Security model
-This repo holds no Supabase credentials and no private server logic.
+This repo holds no Supabase credentials in code and no private server logic.
 
-- No `service_role` key here.
-- No Supabase anon key needed here unless gateway responsibilities expand.
-- Secrets for downstream Svelte + Supabase app belong in separate Vercel repo/env.
+- No `service_role` key here, ever.
+- The one exception: the keepalive job (above) needs a Supabase URL and `anon` key
+  to make a read-only request. Those live only as **GitHub Actions repository
+  secrets**, referenced in the workflow as `${{ secrets.SUPABASE_URL }}` /
+  `${{ secrets.SUPABASE_ANON_KEY }}` — never hard-coded into a workflow file or any
+  other committed file, since this repo is public.
+  - `anon` role is read-only by RLS on the downstream side, so a leaked value only
+    allows reading the menu, not writing it — but treat it as a secret here anyway.
+- All other secrets for the downstream Svelte + Supabase app belong in the separate
+  Vercel repo/env.
 
 ## Change rules
 - If public domain path changes, treat as breaking product change.

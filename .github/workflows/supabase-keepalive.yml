@@ -1,0 +1,30 @@
+name: Supabase keepalive
+
+# The loko-coffee-vercel app's free Supabase project pauses after ~1 week idle
+# (see its .ai/steering/tech.md). Reading one row from menu_doc twice a week
+# keeps that project active. This lives here (rather than in loko-coffee-vercel)
+# so it runs independently of that app's deploys.
+on:
+  schedule:
+    - cron: '0 1 * * 1,5' # 01:00 UTC Monday and Friday
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read a row from menu_doc
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          status=$(curl -s -o /tmp/response.json -w '%{http_code}' \
+            "$SUPABASE_URL/rest/v1/menu_doc?select=id&limit=1" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY")
+          cat /tmp/response.json
+          echo
+          if [ "$status" -ge 400 ]; then
+            echo "Supabase request failed with status $status"
+            exit 1
+          fi

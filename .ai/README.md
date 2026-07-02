@@ -30,6 +30,9 @@ Repo is lightweight static gateway on `loko-coffee.github.io`.
   configurable destination URLs.
 - `menu/menu.json` is local structured menu data kept in repo, but current public
   experience is iframe-hosted, not repo-rendered.
+- `.github/workflows/supabase-keepalive.yml` pings the downstream Supabase project
+  every Monday and Friday so its free tier doesn't auto-pause. Credentials are
+  GitHub Actions repository secrets, not committed. See `tech.md`.
 
 Current product direction: keep this repo as stable user-accessed domain and QR
 surface; actual menu/content app is built with Svelte + Supabase in separate repo

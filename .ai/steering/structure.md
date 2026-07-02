@@ -13,6 +13,10 @@ Repo is intentionally small. Current filesystem:
 │     ├─ structure.md
 │     ├─ design.md
 │     └─ convention.md
+├─ .github/
+│  └─ workflows/
+│     ├─ static.yml                  # deploy this repo to GitHub Pages on push
+│     └─ supabase-keepalive.yml      # Mon/Fri ping to stop downstream Supabase pausing
 ├─ index.html                # root redirect -> /menu
 └─ menu/
    ├─ index.html             # iframe shell -> external Vercel app
@@ -35,6 +39,10 @@ Repo is intentionally small. Current filesystem:
 - `menu/qrcode.js`: third-party library source. Avoid hand-editing unless fixing or
   upgrading library intentionally.
 - `menu/lokocoffee.svg`: reusable brand asset for QR and other static pages.
+- `.github/workflows/static.yml`: deploys this repo to GitHub Pages on push to `main`.
+- `.github/workflows/supabase-keepalive.yml`: scheduled job (Mon/Fri) that reads one
+  row from the downstream Supabase project to prevent free-tier auto-pause. See
+  `tech.md` "Supabase keepalive job" for details and where its credentials live.
 
 ## Where new things go
 - New gateway page: root or `menu/`, depending public URL path.
